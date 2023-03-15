@@ -295,6 +295,7 @@ brg9_bit
 brgh
 brgh_bit
 button
+buzzer
 byte2double
 bytetohex
 bytetostr
@@ -1016,6 +1017,7 @@ re2
 re2_bit
 re3
 re3_bit
+read_dth11
 read_write
 read_write_bit
 res032

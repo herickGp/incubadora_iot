@@ -34,6 +34,89 @@ unsigned int i=0;
 
 
 
+void buzzer(unsigned int millis,unsigned int repeticiones){
+ unsigned int i=0;
+ unsigned int u=0;
+ for(u=0;u<repeticiones;u++){
+  RA0_bit =1;
+ for(i=0;i<millis;i++){
+ Delay_ms(1);
+ }
+  RA0_bit =0;
+ for(i=0;i<millis;i++){
+ }
+ }
+}
+
+char read_dth11(unsigned char sensor){
+ unsigned char dato[5];
+ unsigned char i=0;
+ unsigned char j=0;
+ char valor[4];
+ unsigned int hum=0;
+ unsigned int temp=0;
+ unsigned int base=10;
+
+ temperatura=0;
+ humedad=0;
+
+ while(1){
+
+ PIN_SENSOR_Direction=0;
+ PIN_SENSOR=1;
+ delay_us(20);
+ PIN_SENSOR=0;
+ delay_ms(18);
+ PIN_SENSOR=1;
+ delay_us(22);
+ PIN_SENSOR_Direction=1;
+ delay_us(10);
+ if(PIN_SENSOR){return -1;}
+ delay_us(80);
+ if(PIN_SENSOR==0){return -1;}
+ delay_us(80);
+
+ for(i=0;i<5;i++){
+ for(j=0;j<8;j++){
+ while(PIN_SENSOR==0);
+ delay_us(30);
+ if(PIN_SENSOR){
+ dato[i]=(dato[i]<<1) | 0x01;
+ }
+ if(PIN_SENSOR==0){
+ dato[i]=(dato[i]<<1);}
+ while(PIN_SENSOR==1);
+ }
+ }
+ PIN_SENSOR_Direction=0;
+ PIN_SENSOR=1;
+
+ if((dato[0]+dato[1]+dato[2]+dato[3])==dato[4]){
+ hum=dato[0];
+ temp=dato[2];
+
+ base=10;
+ for(i=0;i<2;i++){
+ valor[i]=(hum/base);
+ hum=hum-(valor[i]*base);
+ base=base/10;
+ }
+ base=10;
+ for(i=2;i<4;i++){
+ valor[i]=(temp/base);
+ temp=temp-(valor[i]*base);
+ base=base/10;
+ }
+
+ temperatura=(valor[2]*10)+valor[3];
+ humedad=(valor[0]*10)+valor[1];
+ return 1;
+
+ }else{return -1;}
+ }
+}
+
+
 void lcd_Print(unsigned char screen){
  char txtInt[4];
  Lcd_Cmd(_LCD_CLEAR);
@@ -97,6 +180,13 @@ void main() {
 
  while(1){
 
+ if(read_dth11(1)==1){
+ lcd_Print('I');
+ }else {
+ lcd_Print('E');
+ buzzer(200,3);
+ delay_ms(500);
+ }
 
 
 
