@@ -8,6 +8,8 @@ main
 		Delay_1us
 		Delay_5500us
 		Delay_50us
+	EEPROM_Read
+	buzzer
 	read_dth11
 		Div_16X16_U
 		Mul_16X16_U
@@ -29,4 +31,23 @@ main
 					Delay_1us
 					Delay_5500us
 					Delay_50us
-	buzzer
+	menu_configuracion
+		lcd_Print
+			Lcd_Cmd
+				Delay_1us
+				Delay_5500us
+				Delay_50us
+			ByteToStr
+				Div_8X8_U
+			Lcd_Out
+				Lcd_Cmd
+					Delay_1us
+					Delay_5500us
+					Delay_50us
+				Lcd_Chr_CP
+					Lcd_Cmd
+						Delay_1us
+						Delay_5500us
+						Delay_50us
+		buzzer
+		EEPROM_Write

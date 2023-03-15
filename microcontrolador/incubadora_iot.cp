@@ -1,5 +1,5 @@
 #line 1 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
-#line 18 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
+#line 21 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
 sbit LCD_RS at RB4_bit;
 sbit LCD_EN at RB5_bit;
 sbit LCD_D4 at RB0_bit;
@@ -166,6 +166,70 @@ void lcd_Print(unsigned char screen){
  }
 }
 
+void menu_configuracion(){
+ unsigned int contador=0;
+
+ if(PIN_PULSADOR_ENTER){
+ contador=0;
+ while(PIN_PULSADOR_ENTER){
+ Delay_ms(10);
+ contador++;
+ if(contador>=100){
+ lcd_Print('C');
+ buzzer(500,1);
+ contador=0;
+ while(PIN_PULSADOR_ENTER){}
+
+ while(contador<2){
+
+ if(contador==0){
+ lcd_Print('T');
+ }else if(contador==1){
+ lcd_Print('H');
+ }
+
+ while(1){
+
+ if(PIN_PULSADOR_DER){
+
+ Delay_ms(200);
+ if(contador==0){
+ if(stpointT<50){stpointT++;}
+ lcd_Print('T');
+ }else if(contador==1){
+ if(stpointH<90){stpointH++;}
+ lcd_Print('H');
+ }
+
+ }else if(PIN_PULSADOR_IZQ){
+
+ Delay_ms(200);
+ if(contador==0){
+ if(stpointT>0){stpointT--;}
+ lcd_Print('T');
+ }else if(contador==1){
+ if(stpointH>20){stpointH--;}
+ lcd_Print('H');
+ }
+
+ }else if(PIN_PULSADOR_ENTER){
+ while(PIN_PULSADOR_ENTER){}
+ buzzer(100,1);
+ break;
+ }
+
+ }
+ contador++;
+ }
+ EEPROM_Write(0x02,stpointT);
+ EEPROM_Write(0x03,stpointH);
+
+
+ }
+ }
+ }
+}
+
 
 void main() {
  ANSEL =0X00;
@@ -176,6 +240,11 @@ void main() {
  PORTD=0x01;
  Lcd_Init();
  Lcd_Cmd(_LCD_CURSOR_OFF);
+ stpointT=EEPROM_Read(0x02);
+ stpointH=EEPROM_Read(0x03);
+ buzzer(600,1);
+
+
 
 
  while(1){
@@ -188,6 +257,10 @@ void main() {
  delay_ms(500);
  }
 
+ for(i=0;i< 1000 ;i++){
+ delay_ms(1);
+ menu_configuracion();
+ }
 
 
 

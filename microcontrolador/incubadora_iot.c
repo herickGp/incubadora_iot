@@ -13,6 +13,9 @@
 
 *******************************************************************************************************************/
 //==================================================DEFINICIONES
+#define ENABLE_CONTROL_AUTOMATICO 1
+#define ENABLE_BUZZER 1
+#define MILISEG_ACTUALIZACION_LECTURA 1000
 
 // pins LCD
 sbit LCD_RS at RB4_bit;
@@ -181,6 +184,70 @@ void lcd_Print(unsigned char screen){             //funcion para imprimir las di
    }//fin switch
 }//fin lcdPrint
 
+void menu_configuracion(){                        //funcion para antender la configuraion de los set points haciendo uso de los 3 pulsadores
+ unsigned int contador=0;
+
+ if(PIN_PULSADOR_ENTER){      // menu de configuracion
+       contador=0;
+       while(PIN_PULSADOR_ENTER){
+         Delay_ms(10);
+         contador++;
+         if(contador>=100){
+           lcd_Print('C');
+           buzzer(500,1);
+           contador=0;
+           while(PIN_PULSADOR_ENTER){}
+
+           while(contador<2){
+
+            if(contador==0){
+               lcd_Print('T');
+             }else if(contador==1){
+                lcd_Print('H');
+             }
+
+             while(1){
+
+               if(PIN_PULSADOR_DER){      //pulsador derecha
+
+                 Delay_ms(200);
+                 if(contador==0){
+                   if(stpointT<50){stpointT++;}
+                   lcd_Print('T');
+                 }else if(contador==1){
+                    if(stpointH<90){stpointH++;}
+                   lcd_Print('H');
+                 }
+
+               }else if(PIN_PULSADOR_IZQ){   //pulsador izquierda
+
+                Delay_ms(200);
+                if(contador==0){
+                   if(stpointT>0){stpointT--;}
+                   lcd_Print('T');
+                 }else if(contador==1){
+                   if(stpointH>20){stpointH--;}
+                   lcd_Print('H');
+                 }
+
+               }else if(PIN_PULSADOR_ENTER){   // pulsador central
+                 while(PIN_PULSADOR_ENTER){}
+                 buzzer(100,1);
+                 break;
+               }
+
+             }
+              contador++;
+           }
+             EEPROM_Write(0x02,stpointT);
+             EEPROM_Write(0x03,stpointH);
+
+
+         }
+       }
+    }
+}// fin menu  de configuracion
+
 //================================================BODY
 void main() {
   ANSEL =0X00;
@@ -191,6 +258,11 @@ void main() {
   PORTD=0x01;
   Lcd_Init();
   Lcd_Cmd(_LCD_CURSOR_OFF);
+  stpointT=EEPROM_Read(0x02);
+  stpointH=EEPROM_Read(0x03);
+  buzzer(600,1);
+//UART1_Init(9600);
+//delay_ms(100);
 
 
   while(1){
@@ -203,6 +275,10 @@ void main() {
      delay_ms(500);
    }
 
+   for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
+    delay_ms(1);
+    menu_configuracion();
+   }
 
 
 

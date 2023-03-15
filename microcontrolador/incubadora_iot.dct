@@ -741,6 +741,7 @@ memcmp
 memcpy
 memmove
 memset
+menu_configuracion
 min
 mm_error_
 mm_freememtable
