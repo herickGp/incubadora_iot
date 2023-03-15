@@ -295,6 +295,7 @@ brg9_bit
 brgh
 brgh_bit
 button
+buzzer
 byte2double
 bytetohex
 bytetostr
@@ -608,6 +609,8 @@ hextoshort
 hextoword
 hts
 hts_bit
+humedad
+i
 i2c_is_idle
 i2c_is_idle_ptr
 i2c_read
@@ -686,9 +689,22 @@ labs
 lcd_chr
 lcd_chr_cp
 lcd_cmd
+lcd_d4
+lcd_d4_direction
+lcd_d5
+lcd_d5_direction
+lcd_d6
+lcd_d6_direction
+lcd_d7
+lcd_d7_direction
+lcd_en
+lcd_en_direction
 lcd_init
 lcd_out
 lcd_out_cp
+lcd_print
+lcd_rs
+lcd_rs_direction
 ldexp
 ldiv
 log
@@ -725,6 +741,7 @@ memcmp
 memcpy
 memmove
 memset
+menu_configuracion
 min
 mm_error_
 mm_freememtable
@@ -832,6 +849,14 @@ pen
 pen_bit
 pie1
 pie2
+pin_calentador
+pin_humificador
+pin_pulsador_der
+pin_pulsador_enter
+pin_pulsador_izq
+pin_sensor
+pin_sensor_direction
+pin_ventilador
 pir1
 pir2
 port_to_tris_offset
@@ -842,6 +867,7 @@ portd
 porte
 pow
 pr2
+proceso_control
 prsen
 prsen_bit
 ps0
@@ -993,6 +1019,7 @@ re2
 re2_bit
 re3
 re3_bit
+read_dth11
 read_write
 read_write_bit
 res032
@@ -1331,6 +1358,8 @@ sspov
 sspov_bit
 sspstat
 status
+stpointh
+stpointt
 str_cut_chr
 str_cut_left
 str_cut_right
@@ -1443,6 +1472,7 @@ t6963c_writecommand
 t6963c_writedata
 tan
 tanh
+temperatura
 time_datetoepoch
 time_epochtodate
 time_jd1970
