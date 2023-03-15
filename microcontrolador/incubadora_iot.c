@@ -1,4 +1,4 @@
-/*****************************************************************************************************************
+ /*****************************************************************************************************************
   PROYECTO FINAL PARA EL DIPLOMADO DE IOT EN LA UNIVERSIDAD DEL MAGDALENA
 
   NOMBRE: INCUBADORA IoT
@@ -51,7 +51,6 @@ unsigned int i=0;
 
 
 //==================================================FUNCIONES
-
 void buzzer(unsigned int millis,unsigned int repeticiones){
   unsigned int i=0;
   unsigned int u=0;
@@ -64,6 +63,7 @@ void buzzer(unsigned int millis,unsigned int repeticiones){
     for(i=0;i<millis;i++){
     }
   }
+
 }//fin buzzer
 
 char read_dth11(unsigned char sensor){            //funcion para realizar la lectura del sensor dht11
@@ -134,9 +134,8 @@ char read_dth11(unsigned char sensor){            //funcion para realizar la lec
    }
 }//fin read_dht
 
-
 void lcd_Print(unsigned char screen){             //funcion para imprimir las diferentes pantallas en la lcd16x2
- char txtInt[4];
+   char txtInt[4];
    Lcd_Cmd(_LCD_CLEAR);
    Lcd_Cmd(_LCD_CURSOR_OFF);
 
@@ -248,6 +247,37 @@ void menu_configuracion(){                        //funcion para antender la con
     }
 }// fin menu  de configuracion
 
+void proceso_control(){                           // funcion para gestionar el control automatico de los perifericos para mantener las variables estables
+
+  if(ENABLE_CONTROL_AUTOMATICO){
+
+    if(temperatura==stpointT){
+       PIN_CALENTADOR=0;
+       PIN_VENTILADOR=0;
+    }else if(temperatura<stpointT){
+       PIN_CALENTADOR=1;
+       PIN_VENTILADOR=0;
+    }else if(temperatura>stpointT){
+       PIN_CALENTADOR=0;
+       PIN_VENTILADOR=1;
+    }
+
+    if(humedad==stpointH){
+       PIN_HUMIFICADOR=0;
+    }else if(humedad<stpointH){
+       PIN_HUMIFICADOR=1;
+    }else if(humedad>stpointH){
+       PIN_HUMIFICADOR=0;
+    }
+
+  }else{
+    PIN_HUMIFICADOR=0;
+    PIN_CALENTADOR=0;
+    PIN_VENTILADOR=0;
+  }
+}//fin proceso control
+
+
 //================================================BODY
 void main() {
   ANSEL =0X00;
@@ -265,8 +295,10 @@ void main() {
 //delay_ms(100);
 
 
-  while(1){
-  
+ while(1){
+
+
+
    if(read_dth11(1)==1){
      lcd_Print('I');
    }else {
@@ -278,10 +310,8 @@ void main() {
    for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
     delay_ms(1);
     menu_configuracion();
+    proceso_control();
    }
-
-
-
 
 
   } //fin while

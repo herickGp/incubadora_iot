@@ -51,3 +51,4 @@ main
 						Delay_50us
 		buzzer
 		EEPROM_Write
+	proceso_control

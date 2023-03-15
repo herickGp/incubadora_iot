@@ -33,7 +33,6 @@ unsigned int i=0;
 
 
 
-
 void buzzer(unsigned int millis,unsigned int repeticiones){
  unsigned int i=0;
  unsigned int u=0;
@@ -46,6 +45,7 @@ void buzzer(unsigned int millis,unsigned int repeticiones){
  for(i=0;i<millis;i++){
  }
  }
+
 }
 
 char read_dth11(unsigned char sensor){
@@ -115,7 +115,6 @@ char read_dth11(unsigned char sensor){
  }else{return -1;}
  }
 }
-
 
 void lcd_Print(unsigned char screen){
  char txtInt[4];
@@ -230,6 +229,37 @@ void menu_configuracion(){
  }
 }
 
+void proceso_control(){
+
+ if( 1 ){
+
+ if(temperatura==stpointT){
+ PIN_CALENTADOR=0;
+ PIN_VENTILADOR=0;
+ }else if(temperatura<stpointT){
+ PIN_CALENTADOR=1;
+ PIN_VENTILADOR=0;
+ }else if(temperatura>stpointT){
+ PIN_CALENTADOR=0;
+ PIN_VENTILADOR=1;
+ }
+
+ if(humedad==stpointH){
+ PIN_HUMIFICADOR=0;
+ }else if(humedad<stpointH){
+ PIN_HUMIFICADOR=1;
+ }else if(humedad>stpointH){
+ PIN_HUMIFICADOR=0;
+ }
+
+ }else{
+ PIN_HUMIFICADOR=0;
+ PIN_CALENTADOR=0;
+ PIN_VENTILADOR=0;
+ }
+}
+
+
 
 void main() {
  ANSEL =0X00;
@@ -249,6 +279,8 @@ void main() {
 
  while(1){
 
+
+
  if(read_dth11(1)==1){
  lcd_Print('I');
  }else {
@@ -260,10 +292,8 @@ void main() {
  for(i=0;i< 1000 ;i++){
  delay_ms(1);
  menu_configuracion();
+ proceso_control();
  }
-
-
-
 
 
  }
