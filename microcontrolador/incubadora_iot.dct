@@ -1618,6 +1618,7 @@ txreg
 txsta
 ua
 ua_bit
+uart_recibir_datos
 uart_transmitir_datos
 uart1_data_ready
 uart1_init

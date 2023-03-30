@@ -37,6 +37,13 @@ main
 		Mul_8X8_U
 		UART1_Write_Text
 			UART1_Write
+	uart_recibir_datos
+		UART1_Data_Ready
+		UART1_Read_Text
+			UART1_Data_Ready
+			UART1_Read
+		UART1_Write_Text
+			UART1_Write
 	menu_configuracion
 		lcd_Print
 			Lcd_Cmd

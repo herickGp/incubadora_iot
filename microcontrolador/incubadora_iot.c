@@ -319,6 +319,16 @@ void uart_transmitir_datos(){
   
 }//fin transmitir datos
 
+void uart_recibir_datos(){
+ unsigned char msg[15];
+  
+ if (UART1_Data_Ready() == 1) {
+    UART1_Read_Text(msg, "X", 15);
+    UART1_Write_Text(msg); 
+    UART1_Write_Text("\n\r");
+  }
+  
+}//fin uart recibir datos
 //================================================BODY
 void main() {
   ANSEL=0X00;
@@ -353,7 +363,8 @@ void main() {
 
    //se mantien en un bucle atendiendo los pulsadores y el proceso de control durante un tiempo estipulado
    for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
-    delay_ms(1);
+    delay_ms(1);  
+    uart_recibir_datos();
     menu_configuracion();
     proceso_control();
    }

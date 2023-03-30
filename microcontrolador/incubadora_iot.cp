@@ -251,10 +251,12 @@ void proceso_control(){
 }
 
 void uart_transmitir_datos(){
+
  unsigned char msg[]="T00A00H00B00S000E00\n\r";
  unsigned char i=0;
  unsigned char unidad=0;
  unsigned char decimal=0;
+
 
  decimal=temperatura/10;
  unidad=temperatura-(decimal*10);
@@ -290,6 +292,16 @@ void uart_transmitir_datos(){
 
 }
 
+void uart_recibir_datos(){
+ unsigned char msg[15];
+
+ if (UART1_Data_Ready() == 1) {
+ UART1_Read_Text(msg, "X", 15);
+ UART1_Write_Text(msg);
+ UART1_Write_Text("\n\r");
+ }
+
+}
 
 void main() {
  ANSEL=0X00;
@@ -325,6 +337,7 @@ void main() {
 
  for(i=0;i< 1000 ;i++){
  delay_ms(1);
+ uart_recibir_datos();
  menu_configuracion();
  proceso_control();
  }
