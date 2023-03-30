@@ -16,7 +16,16 @@
 #define ENABLE_CONTROL_AUTOMATICO 1
 #define ENABLE_BUZZER 1
 #define MILISEG_ACTUALIZACION_LECTURA 1000
-
+// pin perifericos
+#define PIN_BUZZER  RA0_bit
+#define  PIN_SENSOR_Direction TRISD0_bit
+#define  PIN_SENSOR RD0_bit
+#define  PIN_PULSADOR_DER RD7_bit
+#define  PIN_PULSADOR_IZQ RD5_bit
+#define  PIN_PULSADOR_ENTER RD6_bit
+#define  PIN_HUMIFICADOR RD3_bit
+#define  PIN_VENTILADOR RD1_bit
+#define  PIN_CALENTADOR RD2_bit
 // pins LCD
 sbit LCD_RS at RB4_bit;
 sbit LCD_EN at RB5_bit;
@@ -30,24 +39,15 @@ sbit LCD_D4_Direction at TRISB0_bit;
 sbit LCD_D5_Direction at TRISB1_bit;
 sbit LCD_D6_Direction at TRISB2_bit;
 sbit LCD_D7_Direction at TRISB3_bit;
-// pin perifericos
-sbit PIN_CALENTADOR at RD2_bit;
-sbit PIN_VENTILADOR at RD1_bit;
-sbit PIN_HUMIFICADOR at RD3_bit;
-sbit PIN_PULSADOR_ENTER at RD6_bit;
-sbit PIN_PULSADOR_IZQ at RD5_bit;
-sbit PIN_PULSADOR_DER at RD7_bit;
-sbit PIN_SENSOR at RD0_bit;
-sbit PIN_SENSOR_Direction at TRISD0_bit;
-#define PIN_BUZZER  RA0_bit
 
 
- //==================================================VARIABLES
+ //==================================================VARIABLES GLOBALES
 unsigned char temperatura=0;
 unsigned char humedad=0;
 unsigned short stpointH=0;
 unsigned short stpointT=0;
 unsigned int i=0;
+unsigned char error=0;  //error=01 error den dht11
 
 
 //==================================================FUNCIONES
@@ -66,7 +66,7 @@ void buzzer(unsigned int millis,unsigned int repeticiones){
 
 }//fin buzzer
 
-char read_dth11(unsigned char sensor){            //funcion para realizar la lectura del sensor dht11
+char read_dth11(){            //funcion para realizar la lectura del sensor dht11
   unsigned char dato[5];
   unsigned char i=0;
   unsigned char j=0;
@@ -249,7 +249,7 @@ void menu_configuracion(){                        //funcion para antender la con
 
 void proceso_control(){                           // funcion para gestionar el control automatico de los perifericos para mantener las variables estables
 
-  if(ENABLE_CONTROL_AUTOMATICO){
+  if(ENABLE_CONTROL_AUTOMATICO && error==0){
 
     if(temperatura==stpointT){
        PIN_CALENTADOR=0;
@@ -277,11 +277,62 @@ void proceso_control(){                           // funcion para gestionar el c
   }
 }//fin proceso control
 
+void uart_transmitir_datos(){
 
+  unsigned char msg[]="T00A00H00B00S000E00\n\r";
+  unsigned char i=0;
+  unsigned char unidad=0;
+  unsigned char decimal=0;
+  
+  //temperatura
+  decimal=temperatura/10;
+  unidad=temperatura-(decimal*10);
+  msg[1]=decimal+48;
+  msg[2]=unidad+48;
+  //set point temperatura
+  decimal=stpointT/10;
+  unidad=stpointT-(decimal*10);
+  msg[4]=decimal+48;
+  msg[5]=unidad+48;
+  // humedad
+  decimal=humedad/10;
+  unidad=humedad-(decimal*10);
+  msg[7]=decimal+48;
+  msg[8]=unidad+48;
+  // set poin humedad
+  decimal=stpointH/10;
+  unidad=stpointH-(decimal*10);
+  msg[10]=decimal+48;
+  msg[11]=unidad+48;
+  //estado periferico
+  msg[13]=PIN_VENTILADOR+48;
+  msg[14]=PIN_CALENTADOR+48;
+  msg[15]=PIN_HUMIFICADOR+48;
+  // codigo error
+  decimal=error/10;
+  unidad=error-(decimal*10);
+  msg[17]=decimal+48;
+  msg[18]=unidad+48;
+
+
+  UART1_Write_Text(msg);
+  
+}//fin transmitir datos
+
+void uart_recibir_datos(){
+ unsigned char msg[15];
+  
+ if (UART1_Data_Ready() == 1) {
+    UART1_Read_Text(msg, "X", 15);
+    UART1_Write_Text(msg); 
+    UART1_Write_Text("\n\r");
+  }
+  
+}//fin uart recibir datos
 //================================================BODY
 void main() {
-  ANSEL =0X00;
-  ANSELH = 0X00;
+  ANSEL=0X00;
+  ANSELH=0X00;
   TRISD=0XE0;
   TRISA=0X00;
   PORTA=0X00;
@@ -290,25 +341,30 @@ void main() {
   Lcd_Cmd(_LCD_CURSOR_OFF);
   stpointT=EEPROM_Read(0x02);
   stpointH=EEPROM_Read(0x03);
+  UART1_Init(9600);
   buzzer(600,1);
-//UART1_Init(9600);
-//delay_ms(100);
 
 
  while(1){
 
 
-
-   if(read_dth11(1)==1){
+    //se realiza la lectura del sensor
+   if(read_dth11()==1){
      lcd_Print('I');
+     error=0;
    }else {
      lcd_Print('E');
+     error=1;
      buzzer(200,3);
      delay_ms(500);
    }
+   //se transmite la informacion por medio de uart
+   uart_transmitir_datos();
 
+   //se mantien en un bucle atendiendo los pulsadores y el proceso de control durante un tiempo estipulado
    for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
-    delay_ms(1);
+    delay_ms(1);  
+    uart_recibir_datos();
     menu_configuracion();
     proceso_control();
    }

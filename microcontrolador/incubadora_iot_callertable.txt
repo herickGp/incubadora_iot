@@ -9,6 +9,7 @@ main
 		Delay_5500us
 		Delay_50us
 	EEPROM_Read
+	UART1_Init
 	buzzer
 	read_dth11
 		Div_16X16_U
@@ -31,6 +32,18 @@ main
 					Delay_1us
 					Delay_5500us
 					Delay_50us
+	uart_transmitir_datos
+		Div_8X8_U
+		Mul_8X8_U
+		UART1_Write_Text
+			UART1_Write
+	uart_recibir_datos
+		UART1_Data_Ready
+		UART1_Read_Text
+			UART1_Data_Ready
+			UART1_Read
+		UART1_Write_Text
+			UART1_Write
 	menu_configuracion
 		lcd_Print
 			Lcd_Cmd

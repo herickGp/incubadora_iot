@@ -14,10 +14,10 @@ L_buzzer0:
 	MOVF       FARG_buzzer_repeticiones+1, 0
 	SUBWF      buzzer_u_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__buzzer105
+	GOTO       L__buzzer109
 	MOVF       FARG_buzzer_repeticiones+0, 0
 	SUBWF      buzzer_u_L0+0, 0
-L__buzzer105:
+L__buzzer109:
 	BTFSC      STATUS+0, 0
 	GOTO       L_buzzer1
 ;incubadora_iot.c,58 :: 		PIN_BUZZER=1;
@@ -29,10 +29,10 @@ L_buzzer3:
 	MOVF       FARG_buzzer_millis+1, 0
 	SUBWF      buzzer_i_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__buzzer106
+	GOTO       L__buzzer110
 	MOVF       FARG_buzzer_millis+0, 0
 	SUBWF      buzzer_i_L0+0, 0
-L__buzzer106:
+L__buzzer110:
 	BTFSC      STATUS+0, 0
 	GOTO       L_buzzer4
 ;incubadora_iot.c,60 :: 		Delay_ms(1);
@@ -61,10 +61,10 @@ L_buzzer7:
 	MOVF       FARG_buzzer_millis+1, 0
 	SUBWF      buzzer_i_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__buzzer107
+	GOTO       L__buzzer111
 	MOVF       FARG_buzzer_millis+0, 0
 	SUBWF      buzzer_i_L0+0, 0
-L__buzzer107:
+L__buzzer111:
 	BTFSC      STATUS+0, 0
 	GOTO       L_buzzer8
 	INCF       buzzer_i_L0+0, 1
@@ -87,7 +87,7 @@ L_end_buzzer:
 
 _read_dth11:
 
-;incubadora_iot.c,69 :: 		char read_dth11(unsigned char sensor){            //funcion para realizar la lectura del sensor dht11
+;incubadora_iot.c,69 :: 		char read_dth11(){            //funcion para realizar la lectura del sensor dht11
 ;incubadora_iot.c,71 :: 		unsigned char i=0;
 	CLRF       read_dth11_i_L0+0
 	CLRF       read_dth11_j_L0+0
@@ -281,10 +281,10 @@ L_read_dth1121:
 	MOVLW      0
 	XORWF      R2+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__read_dth11109
+	GOTO       L__read_dth11113
 	MOVF       read_dth11_dato_L0+4, 0
 	XORWF      R2+0, 0
-L__read_dth11109:
+L__read_dth11113:
 	BTFSS      STATUS+0, 2
 	GOTO       L_read_dth1133
 ;incubadora_iot.c,113 :: 		hum=dato[0];
@@ -749,10 +749,10 @@ L_menu_configuracion53:
 	MOVLW      0
 	SUBWF      menu_configuracion_contador_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__menu_configuracion112
+	GOTO       L__menu_configuracion116
 	MOVLW      100
 	SUBWF      menu_configuracion_contador_L0+0, 0
-L__menu_configuracion112:
+L__menu_configuracion116:
 	BTFSS      STATUS+0, 0
 	GOTO       L_menu_configuracion54
 ;incubadora_iot.c,195 :: 		lcd_Print('C');
@@ -783,20 +783,20 @@ L_menu_configuracion57:
 	MOVLW      0
 	SUBWF      menu_configuracion_contador_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__menu_configuracion113
+	GOTO       L__menu_configuracion117
 	MOVLW      2
 	SUBWF      menu_configuracion_contador_L0+0, 0
-L__menu_configuracion113:
+L__menu_configuracion117:
 	BTFSC      STATUS+0, 0
 	GOTO       L_menu_configuracion58
 ;incubadora_iot.c,202 :: 		if(contador==0){
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__menu_configuracion114
+	GOTO       L__menu_configuracion118
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+0, 0
-L__menu_configuracion114:
+L__menu_configuracion118:
 	BTFSS      STATUS+0, 2
 	GOTO       L_menu_configuracion59
 ;incubadora_iot.c,203 :: 		lcd_Print('T');
@@ -809,10 +809,10 @@ L_menu_configuracion59:
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__menu_configuracion115
+	GOTO       L__menu_configuracion119
 	MOVLW      1
 	XORWF      menu_configuracion_contador_L0+0, 0
-L__menu_configuracion115:
+L__menu_configuracion119:
 	BTFSS      STATUS+0, 2
 	GOTO       L_menu_configuracion61
 ;incubadora_iot.c,205 :: 		lcd_Print('H');
@@ -846,10 +846,10 @@ L_menu_configuracion65:
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__menu_configuracion116
+	GOTO       L__menu_configuracion120
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+0, 0
-L__menu_configuracion116:
+L__menu_configuracion120:
 	BTFSS      STATUS+0, 2
 	GOTO       L_menu_configuracion66
 ;incubadora_iot.c,214 :: 		if(stpointT<50){stpointT++;}
@@ -869,10 +869,10 @@ L_menu_configuracion66:
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__menu_configuracion117
+	GOTO       L__menu_configuracion121
 	MOVLW      1
 	XORWF      menu_configuracion_contador_L0+0, 0
-L__menu_configuracion117:
+L__menu_configuracion121:
 	BTFSS      STATUS+0, 2
 	GOTO       L_menu_configuracion69
 ;incubadora_iot.c,217 :: 		if(stpointH<90){stpointH++;}
@@ -913,10 +913,10 @@ L_menu_configuracion73:
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__menu_configuracion118
+	GOTO       L__menu_configuracion122
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+0, 0
-L__menu_configuracion118:
+L__menu_configuracion122:
 	BTFSS      STATUS+0, 2
 	GOTO       L_menu_configuracion74
 ;incubadora_iot.c,225 :: 		if(stpointT>0){stpointT--;}
@@ -936,10 +936,10 @@ L_menu_configuracion74:
 	MOVLW      0
 	XORWF      menu_configuracion_contador_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__menu_configuracion119
+	GOTO       L__menu_configuracion123
 	MOVLW      1
 	XORWF      menu_configuracion_contador_L0+0, 0
-L__menu_configuracion119:
+L__menu_configuracion123:
 	BTFSS      STATUS+0, 2
 	GOTO       L_menu_configuracion77
 ;incubadora_iot.c,228 :: 		if(stpointH>20){stpointH--;}
@@ -1020,113 +1020,367 @@ L_end_menu_configuracion:
 _proceso_control:
 
 ;incubadora_iot.c,250 :: 		void proceso_control(){                           // funcion para gestionar el control automatico de los perifericos para mantener las variables estables
+;incubadora_iot.c,252 :: 		if(ENABLE_CONTROL_AUTOMATICO && error==0){
+	MOVF       _error+0, 0
+	XORLW      0
+	BTFSS      STATUS+0, 2
+	GOTO       L_proceso_control85
+L__proceso_control107:
 ;incubadora_iot.c,254 :: 		if(temperatura==stpointT){
 	MOVF       _temperatura+0, 0
 	XORWF      _stpointT+0, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L_proceso_control84
+	GOTO       L_proceso_control86
 ;incubadora_iot.c,255 :: 		PIN_CALENTADOR=0;
 	BCF        RD2_bit+0, BitPos(RD2_bit+0)
 ;incubadora_iot.c,256 :: 		PIN_VENTILADOR=0;
 	BCF        RD1_bit+0, BitPos(RD1_bit+0)
 ;incubadora_iot.c,257 :: 		}else if(temperatura<stpointT){
-	GOTO       L_proceso_control85
-L_proceso_control84:
+	GOTO       L_proceso_control87
+L_proceso_control86:
 	MOVF       _stpointT+0, 0
 	SUBWF      _temperatura+0, 0
 	BTFSC      STATUS+0, 0
-	GOTO       L_proceso_control86
+	GOTO       L_proceso_control88
 ;incubadora_iot.c,258 :: 		PIN_CALENTADOR=1;
 	BSF        RD2_bit+0, BitPos(RD2_bit+0)
 ;incubadora_iot.c,259 :: 		PIN_VENTILADOR=0;
 	BCF        RD1_bit+0, BitPos(RD1_bit+0)
 ;incubadora_iot.c,260 :: 		}else if(temperatura>stpointT){
-	GOTO       L_proceso_control87
-L_proceso_control86:
+	GOTO       L_proceso_control89
+L_proceso_control88:
 	MOVF       _temperatura+0, 0
 	SUBWF      _stpointT+0, 0
 	BTFSC      STATUS+0, 0
-	GOTO       L_proceso_control88
+	GOTO       L_proceso_control90
 ;incubadora_iot.c,261 :: 		PIN_CALENTADOR=0;
 	BCF        RD2_bit+0, BitPos(RD2_bit+0)
 ;incubadora_iot.c,262 :: 		PIN_VENTILADOR=1;
 	BSF        RD1_bit+0, BitPos(RD1_bit+0)
 ;incubadora_iot.c,263 :: 		}
-L_proceso_control88:
+L_proceso_control90:
+L_proceso_control89:
 L_proceso_control87:
-L_proceso_control85:
 ;incubadora_iot.c,265 :: 		if(humedad==stpointH){
 	MOVF       _humedad+0, 0
 	XORWF      _stpointH+0, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L_proceso_control89
+	GOTO       L_proceso_control91
 ;incubadora_iot.c,266 :: 		PIN_HUMIFICADOR=0;
 	BCF        RD3_bit+0, BitPos(RD3_bit+0)
 ;incubadora_iot.c,267 :: 		}else if(humedad<stpointH){
-	GOTO       L_proceso_control90
-L_proceso_control89:
+	GOTO       L_proceso_control92
+L_proceso_control91:
 	MOVF       _stpointH+0, 0
 	SUBWF      _humedad+0, 0
 	BTFSC      STATUS+0, 0
-	GOTO       L_proceso_control91
+	GOTO       L_proceso_control93
 ;incubadora_iot.c,268 :: 		PIN_HUMIFICADOR=1;
 	BSF        RD3_bit+0, BitPos(RD3_bit+0)
 ;incubadora_iot.c,269 :: 		}else if(humedad>stpointH){
-	GOTO       L_proceso_control92
-L_proceso_control91:
+	GOTO       L_proceso_control94
+L_proceso_control93:
 	MOVF       _humedad+0, 0
 	SUBWF      _stpointH+0, 0
 	BTFSC      STATUS+0, 0
-	GOTO       L_proceso_control93
+	GOTO       L_proceso_control95
 ;incubadora_iot.c,270 :: 		PIN_HUMIFICADOR=0;
 	BCF        RD3_bit+0, BitPos(RD3_bit+0)
 ;incubadora_iot.c,271 :: 		}
-L_proceso_control93:
-L_proceso_control92:
-L_proceso_control90:
-;incubadora_iot.c,277 :: 		}
+L_proceso_control95:
 L_proceso_control94:
+L_proceso_control92:
+;incubadora_iot.c,273 :: 		}else{
+	GOTO       L_proceso_control96
+L_proceso_control85:
+;incubadora_iot.c,274 :: 		PIN_HUMIFICADOR=0;
+	BCF        RD3_bit+0, BitPos(RD3_bit+0)
+;incubadora_iot.c,275 :: 		PIN_CALENTADOR=0;
+	BCF        RD2_bit+0, BitPos(RD2_bit+0)
+;incubadora_iot.c,276 :: 		PIN_VENTILADOR=0;
+	BCF        RD1_bit+0, BitPos(RD1_bit+0)
+;incubadora_iot.c,277 :: 		}
+L_proceso_control96:
 ;incubadora_iot.c,278 :: 		}//fin proceso control
 L_end_proceso_control:
 	RETURN
 ; end of _proceso_control
 
+_uart_transmitir_datos:
+
+;incubadora_iot.c,280 :: 		void uart_transmitir_datos(){
+;incubadora_iot.c,282 :: 		unsigned char msg[]="T00A00H00B00S000E00\n\r";
+	MOVLW      84
+	MOVWF      uart_transmitir_datos_msg_L0+0
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+1
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+2
+	MOVLW      65
+	MOVWF      uart_transmitir_datos_msg_L0+3
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+4
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+5
+	MOVLW      72
+	MOVWF      uart_transmitir_datos_msg_L0+6
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+7
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+8
+	MOVLW      66
+	MOVWF      uart_transmitir_datos_msg_L0+9
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+10
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+11
+	MOVLW      83
+	MOVWF      uart_transmitir_datos_msg_L0+12
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+13
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+14
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+15
+	MOVLW      69
+	MOVWF      uart_transmitir_datos_msg_L0+16
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+17
+	MOVLW      48
+	MOVWF      uart_transmitir_datos_msg_L0+18
+	MOVLW      10
+	MOVWF      uart_transmitir_datos_msg_L0+19
+	MOVLW      13
+	MOVWF      uart_transmitir_datos_msg_L0+20
+	CLRF       uart_transmitir_datos_msg_L0+21
+;incubadora_iot.c,288 :: 		decimal=temperatura/10;
+	MOVLW      10
+	MOVWF      R4+0
+	MOVF       _temperatura+0, 0
+	MOVWF      R0+0
+	CALL       _Div_8X8_U+0
+	MOVF       R0+0, 0
+	MOVWF      FLOC__uart_transmitir_datos+0
+	MOVF       FLOC__uart_transmitir_datos+0, 0
+	MOVWF      R0+0
+	MOVLW      10
+	MOVWF      R4+0
+	CALL       _Mul_8X8_U+0
+;incubadora_iot.c,289 :: 		unidad=temperatura-(decimal*10);
+	MOVF       R0+0, 0
+	SUBWF      _temperatura+0, 0
+	MOVWF      R0+0
+;incubadora_iot.c,290 :: 		msg[1]=decimal+48;
+	MOVLW      48
+	ADDWF      FLOC__uart_transmitir_datos+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+1
+;incubadora_iot.c,291 :: 		msg[2]=unidad+48;
+	MOVLW      48
+	ADDWF      R0+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+2
+;incubadora_iot.c,293 :: 		decimal=stpointT/10;
+	MOVLW      10
+	MOVWF      R4+0
+	MOVF       _stpointT+0, 0
+	MOVWF      R0+0
+	CALL       _Div_8X8_U+0
+	MOVF       R0+0, 0
+	MOVWF      FLOC__uart_transmitir_datos+0
+	MOVF       FLOC__uart_transmitir_datos+0, 0
+	MOVWF      R0+0
+	MOVLW      10
+	MOVWF      R4+0
+	CALL       _Mul_8X8_U+0
+;incubadora_iot.c,294 :: 		unidad=stpointT-(decimal*10);
+	MOVF       R0+0, 0
+	SUBWF      _stpointT+0, 0
+	MOVWF      R0+0
+;incubadora_iot.c,295 :: 		msg[4]=decimal+48;
+	MOVLW      48
+	ADDWF      FLOC__uart_transmitir_datos+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+4
+;incubadora_iot.c,296 :: 		msg[5]=unidad+48;
+	MOVLW      48
+	ADDWF      R0+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+5
+;incubadora_iot.c,298 :: 		decimal=humedad/10;
+	MOVLW      10
+	MOVWF      R4+0
+	MOVF       _humedad+0, 0
+	MOVWF      R0+0
+	CALL       _Div_8X8_U+0
+	MOVF       R0+0, 0
+	MOVWF      FLOC__uart_transmitir_datos+0
+	MOVF       FLOC__uart_transmitir_datos+0, 0
+	MOVWF      R0+0
+	MOVLW      10
+	MOVWF      R4+0
+	CALL       _Mul_8X8_U+0
+;incubadora_iot.c,299 :: 		unidad=humedad-(decimal*10);
+	MOVF       R0+0, 0
+	SUBWF      _humedad+0, 0
+	MOVWF      R0+0
+;incubadora_iot.c,300 :: 		msg[7]=decimal+48;
+	MOVLW      48
+	ADDWF      FLOC__uart_transmitir_datos+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+7
+;incubadora_iot.c,301 :: 		msg[8]=unidad+48;
+	MOVLW      48
+	ADDWF      R0+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+8
+;incubadora_iot.c,303 :: 		decimal=stpointH/10;
+	MOVLW      10
+	MOVWF      R4+0
+	MOVF       _stpointH+0, 0
+	MOVWF      R0+0
+	CALL       _Div_8X8_U+0
+	MOVF       R0+0, 0
+	MOVWF      FLOC__uart_transmitir_datos+0
+	MOVF       FLOC__uart_transmitir_datos+0, 0
+	MOVWF      R0+0
+	MOVLW      10
+	MOVWF      R4+0
+	CALL       _Mul_8X8_U+0
+;incubadora_iot.c,304 :: 		unidad=stpointH-(decimal*10);
+	MOVF       R0+0, 0
+	SUBWF      _stpointH+0, 0
+	MOVWF      R0+0
+;incubadora_iot.c,305 :: 		msg[10]=decimal+48;
+	MOVLW      48
+	ADDWF      FLOC__uart_transmitir_datos+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+10
+;incubadora_iot.c,306 :: 		msg[11]=unidad+48;
+	MOVLW      48
+	ADDWF      R0+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+11
+;incubadora_iot.c,308 :: 		msg[13]=PIN_VENTILADOR+48;
+	MOVLW      0
+	BTFSC      RD1_bit+0, BitPos(RD1_bit+0)
+	MOVLW      1
+	MOVWF      uart_transmitir_datos_msg_L0+13
+	MOVLW      48
+	ADDWF      uart_transmitir_datos_msg_L0+13, 1
+;incubadora_iot.c,309 :: 		msg[14]=PIN_CALENTADOR+48;
+	MOVLW      0
+	BTFSC      RD2_bit+0, BitPos(RD2_bit+0)
+	MOVLW      1
+	MOVWF      uart_transmitir_datos_msg_L0+14
+	MOVLW      48
+	ADDWF      uart_transmitir_datos_msg_L0+14, 1
+;incubadora_iot.c,310 :: 		msg[15]=PIN_HUMIFICADOR+48;
+	MOVLW      0
+	BTFSC      RD3_bit+0, BitPos(RD3_bit+0)
+	MOVLW      1
+	MOVWF      uart_transmitir_datos_msg_L0+15
+	MOVLW      48
+	ADDWF      uart_transmitir_datos_msg_L0+15, 1
+;incubadora_iot.c,312 :: 		decimal=error/10;
+	MOVLW      10
+	MOVWF      R4+0
+	MOVF       _error+0, 0
+	MOVWF      R0+0
+	CALL       _Div_8X8_U+0
+	MOVF       R0+0, 0
+	MOVWF      FLOC__uart_transmitir_datos+0
+	MOVF       FLOC__uart_transmitir_datos+0, 0
+	MOVWF      R0+0
+	MOVLW      10
+	MOVWF      R4+0
+	CALL       _Mul_8X8_U+0
+;incubadora_iot.c,313 :: 		unidad=error-(decimal*10);
+	MOVF       R0+0, 0
+	SUBWF      _error+0, 0
+	MOVWF      R0+0
+;incubadora_iot.c,314 :: 		msg[17]=decimal+48;
+	MOVLW      48
+	ADDWF      FLOC__uart_transmitir_datos+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+17
+;incubadora_iot.c,315 :: 		msg[18]=unidad+48;
+	MOVLW      48
+	ADDWF      R0+0, 0
+	MOVWF      uart_transmitir_datos_msg_L0+18
+;incubadora_iot.c,318 :: 		UART1_Write_Text(msg);
+	MOVLW      uart_transmitir_datos_msg_L0+0
+	MOVWF      FARG_UART1_Write_Text_uart_text+0
+	CALL       _UART1_Write_Text+0
+;incubadora_iot.c,320 :: 		}//fin transmitir datos
+L_end_uart_transmitir_datos:
+	RETURN
+; end of _uart_transmitir_datos
+
+_uart_recibir_datos:
+
+;incubadora_iot.c,322 :: 		void uart_recibir_datos(){
+;incubadora_iot.c,325 :: 		if (UART1_Data_Ready() == 1) {
+	CALL       _UART1_Data_Ready+0
+	MOVF       R0+0, 0
+	XORLW      1
+	BTFSS      STATUS+0, 2
+	GOTO       L_uart_recibir_datos97
+;incubadora_iot.c,326 :: 		UART1_Read_Text(msg, "X", 15);
+	MOVLW      uart_recibir_datos_msg_L0+0
+	MOVWF      FARG_UART1_Read_Text_Output+0
+	MOVLW      ?lstr17_incubadora_iot+0
+	MOVWF      FARG_UART1_Read_Text_Delimiter+0
+	MOVLW      15
+	MOVWF      FARG_UART1_Read_Text_Attempts+0
+	CALL       _UART1_Read_Text+0
+;incubadora_iot.c,327 :: 		UART1_Write_Text(msg);
+	MOVLW      uart_recibir_datos_msg_L0+0
+	MOVWF      FARG_UART1_Write_Text_uart_text+0
+	CALL       _UART1_Write_Text+0
+;incubadora_iot.c,328 :: 		UART1_Write_Text("\n\r");
+	MOVLW      ?lstr18_incubadora_iot+0
+	MOVWF      FARG_UART1_Write_Text_uart_text+0
+	CALL       _UART1_Write_Text+0
+;incubadora_iot.c,329 :: 		}
+L_uart_recibir_datos97:
+;incubadora_iot.c,331 :: 		}//fin uart recibir datos
+L_end_uart_recibir_datos:
+	RETURN
+; end of _uart_recibir_datos
+
 _main:
 
-;incubadora_iot.c,282 :: 		void main() {
-;incubadora_iot.c,283 :: 		ANSEL =0X00;
+;incubadora_iot.c,333 :: 		void main() {
+;incubadora_iot.c,334 :: 		ANSEL=0X00;
 	CLRF       ANSEL+0
-;incubadora_iot.c,284 :: 		ANSELH = 0X00;
+;incubadora_iot.c,335 :: 		ANSELH=0X00;
 	CLRF       ANSELH+0
-;incubadora_iot.c,285 :: 		TRISD=0XE0;
+;incubadora_iot.c,336 :: 		TRISD=0XE0;
 	MOVLW      224
 	MOVWF      TRISD+0
-;incubadora_iot.c,286 :: 		TRISA=0X00;
+;incubadora_iot.c,337 :: 		TRISA=0X00;
 	CLRF       TRISA+0
-;incubadora_iot.c,287 :: 		PORTA=0X00;
+;incubadora_iot.c,338 :: 		PORTA=0X00;
 	CLRF       PORTA+0
-;incubadora_iot.c,288 :: 		PORTD=0x01;
+;incubadora_iot.c,339 :: 		PORTD=0x01;
 	MOVLW      1
 	MOVWF      PORTD+0
-;incubadora_iot.c,289 :: 		Lcd_Init();
+;incubadora_iot.c,340 :: 		Lcd_Init();
 	CALL       _Lcd_Init+0
-;incubadora_iot.c,290 :: 		Lcd_Cmd(_LCD_CURSOR_OFF);
+;incubadora_iot.c,341 :: 		Lcd_Cmd(_LCD_CURSOR_OFF);
 	MOVLW      12
 	MOVWF      FARG_Lcd_Cmd_out_char+0
 	CALL       _Lcd_Cmd+0
-;incubadora_iot.c,291 :: 		stpointT=EEPROM_Read(0x02);
+;incubadora_iot.c,342 :: 		stpointT=EEPROM_Read(0x02);
 	MOVLW      2
 	MOVWF      FARG_EEPROM_Read_Address+0
 	CALL       _EEPROM_Read+0
 	MOVF       R0+0, 0
 	MOVWF      _stpointT+0
-;incubadora_iot.c,292 :: 		stpointH=EEPROM_Read(0x03);
+;incubadora_iot.c,343 :: 		stpointH=EEPROM_Read(0x03);
 	MOVLW      3
 	MOVWF      FARG_EEPROM_Read_Address+0
 	CALL       _EEPROM_Read+0
 	MOVF       R0+0, 0
 	MOVWF      _stpointH+0
-;incubadora_iot.c,293 :: 		buzzer(600,1);
+;incubadora_iot.c,344 :: 		UART1_Init(9600);
+	MOVLW      25
+	MOVWF      SPBRG+0
+	BSF        TXSTA+0, 2
+	CALL       _UART1_Init+0
+;incubadora_iot.c,345 :: 		buzzer(600,1);
 	MOVLW      88
 	MOVWF      FARG_buzzer_millis+0
 	MOVLW      2
@@ -1136,28 +1390,31 @@ _main:
 	MOVLW      0
 	MOVWF      FARG_buzzer_repeticiones+1
 	CALL       _buzzer+0
-;incubadora_iot.c,298 :: 		while(1){
-L_main95:
-;incubadora_iot.c,302 :: 		if(read_dth11(1)==1){
-	MOVLW      1
-	MOVWF      FARG_read_dth11_sensor+0
+;incubadora_iot.c,348 :: 		while(1){
+L_main98:
+;incubadora_iot.c,352 :: 		if(read_dth11()==1){
 	CALL       _read_dth11+0
 	MOVF       R0+0, 0
 	XORLW      1
 	BTFSS      STATUS+0, 2
-	GOTO       L_main97
-;incubadora_iot.c,303 :: 		lcd_Print('I');
+	GOTO       L_main100
+;incubadora_iot.c,353 :: 		lcd_Print('I');
 	MOVLW      73
 	MOVWF      FARG_lcd_Print_screen+0
 	CALL       _lcd_Print+0
-;incubadora_iot.c,304 :: 		}else {
-	GOTO       L_main98
-L_main97:
-;incubadora_iot.c,305 :: 		lcd_Print('E');
+;incubadora_iot.c,354 :: 		error=0;
+	CLRF       _error+0
+;incubadora_iot.c,355 :: 		}else {
+	GOTO       L_main101
+L_main100:
+;incubadora_iot.c,356 :: 		lcd_Print('E');
 	MOVLW      69
 	MOVWF      FARG_lcd_Print_screen+0
 	CALL       _lcd_Print+0
-;incubadora_iot.c,306 :: 		buzzer(200,3);
+;incubadora_iot.c,357 :: 		error=1;
+	MOVLW      1
+	MOVWF      _error+0
+;incubadora_iot.c,358 :: 		buzzer(200,3);
 	MOVLW      200
 	MOVWF      FARG_buzzer_millis+0
 	CLRF       FARG_buzzer_millis+1
@@ -1166,61 +1423,65 @@ L_main97:
 	MOVLW      0
 	MOVWF      FARG_buzzer_repeticiones+1
 	CALL       _buzzer+0
-;incubadora_iot.c,307 :: 		delay_ms(500);
+;incubadora_iot.c,359 :: 		delay_ms(500);
 	MOVLW      3
 	MOVWF      R11+0
 	MOVLW      138
 	MOVWF      R12+0
 	MOVLW      85
 	MOVWF      R13+0
-L_main99:
+L_main102:
 	DECFSZ     R13+0, 1
-	GOTO       L_main99
+	GOTO       L_main102
 	DECFSZ     R12+0, 1
-	GOTO       L_main99
+	GOTO       L_main102
 	DECFSZ     R11+0, 1
-	GOTO       L_main99
+	GOTO       L_main102
 	NOP
 	NOP
-;incubadora_iot.c,308 :: 		}
-L_main98:
-;incubadora_iot.c,310 :: 		for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
+;incubadora_iot.c,360 :: 		}
+L_main101:
+;incubadora_iot.c,362 :: 		uart_transmitir_datos();
+	CALL       _uart_transmitir_datos+0
+;incubadora_iot.c,365 :: 		for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
 	CLRF       _i+0
 	CLRF       _i+1
-L_main100:
+L_main103:
 	MOVLW      3
 	SUBWF      _i+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main122
+	GOTO       L__main128
 	MOVLW      232
 	SUBWF      _i+0, 0
-L__main122:
+L__main128:
 	BTFSC      STATUS+0, 0
-	GOTO       L_main101
-;incubadora_iot.c,311 :: 		delay_ms(1);
+	GOTO       L_main104
+;incubadora_iot.c,366 :: 		delay_ms(1);
 	MOVLW      2
 	MOVWF      R12+0
 	MOVLW      75
 	MOVWF      R13+0
-L_main103:
+L_main106:
 	DECFSZ     R13+0, 1
-	GOTO       L_main103
+	GOTO       L_main106
 	DECFSZ     R12+0, 1
-	GOTO       L_main103
-;incubadora_iot.c,312 :: 		menu_configuracion();
+	GOTO       L_main106
+;incubadora_iot.c,367 :: 		uart_recibir_datos();
+	CALL       _uart_recibir_datos+0
+;incubadora_iot.c,368 :: 		menu_configuracion();
 	CALL       _menu_configuracion+0
-;incubadora_iot.c,313 :: 		proceso_control();
+;incubadora_iot.c,369 :: 		proceso_control();
 	CALL       _proceso_control+0
-;incubadora_iot.c,310 :: 		for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
+;incubadora_iot.c,365 :: 		for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
 	INCF       _i+0, 1
 	BTFSC      STATUS+0, 2
 	INCF       _i+1, 1
-;incubadora_iot.c,314 :: 		}
-	GOTO       L_main100
-L_main101:
-;incubadora_iot.c,317 :: 		} //fin while
-	GOTO       L_main95
-;incubadora_iot.c,318 :: 		}//fin main
+;incubadora_iot.c,370 :: 		}
+	GOTO       L_main103
+L_main104:
+;incubadora_iot.c,373 :: 		} //fin while
+	GOTO       L_main98
+;incubadora_iot.c,374 :: 		}//fin main
 L_end_main:
 	GOTO       $+0
 ; end of _main

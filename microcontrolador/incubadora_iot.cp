@@ -1,5 +1,5 @@
 #line 1 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
-#line 21 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
+#line 30 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
 sbit LCD_RS at RB4_bit;
 sbit LCD_EN at RB5_bit;
 sbit LCD_D4 at RB0_bit;
@@ -13,16 +13,6 @@ sbit LCD_D5_Direction at TRISB1_bit;
 sbit LCD_D6_Direction at TRISB2_bit;
 sbit LCD_D7_Direction at TRISB3_bit;
 
-sbit PIN_CALENTADOR at RD2_bit;
-sbit PIN_VENTILADOR at RD1_bit;
-sbit PIN_HUMIFICADOR at RD3_bit;
-sbit PIN_PULSADOR_ENTER at RD6_bit;
-sbit PIN_PULSADOR_IZQ at RD5_bit;
-sbit PIN_PULSADOR_DER at RD7_bit;
-sbit PIN_SENSOR at RD0_bit;
-sbit PIN_SENSOR_Direction at TRISD0_bit;
-
-
 
 
 unsigned char temperatura=0;
@@ -30,6 +20,7 @@ unsigned char humedad=0;
 unsigned short stpointH=0;
 unsigned short stpointT=0;
 unsigned int i=0;
+unsigned char error=0;
 
 
 
@@ -48,7 +39,7 @@ void buzzer(unsigned int millis,unsigned int repeticiones){
 
 }
 
-char read_dth11(unsigned char sensor){
+char read_dth11(){
  unsigned char dato[5];
  unsigned char i=0;
  unsigned char j=0;
@@ -62,34 +53,34 @@ char read_dth11(unsigned char sensor){
 
  while(1){
 
- PIN_SENSOR_Direction=0;
- PIN_SENSOR=1;
+  TRISD0_bit =0;
+  RD0_bit =1;
  delay_us(20);
- PIN_SENSOR=0;
+  RD0_bit =0;
  delay_ms(18);
- PIN_SENSOR=1;
+  RD0_bit =1;
  delay_us(22);
- PIN_SENSOR_Direction=1;
+  TRISD0_bit =1;
  delay_us(10);
- if(PIN_SENSOR){return -1;}
+ if( RD0_bit ){return -1;}
  delay_us(80);
- if(PIN_SENSOR==0){return -1;}
+ if( RD0_bit ==0){return -1;}
  delay_us(80);
 
  for(i=0;i<5;i++){
  for(j=0;j<8;j++){
- while(PIN_SENSOR==0);
+ while( RD0_bit ==0);
  delay_us(30);
- if(PIN_SENSOR){
+ if( RD0_bit ){
  dato[i]=(dato[i]<<1) | 0x01;
  }
- if(PIN_SENSOR==0){
+ if( RD0_bit ==0){
  dato[i]=(dato[i]<<1);}
- while(PIN_SENSOR==1);
+ while( RD0_bit ==1);
  }
  }
- PIN_SENSOR_Direction=0;
- PIN_SENSOR=1;
+  TRISD0_bit =0;
+  RD0_bit =1;
 
  if((dato[0]+dato[1]+dato[2]+dato[3])==dato[4]){
  hum=dato[0];
@@ -168,16 +159,16 @@ void lcd_Print(unsigned char screen){
 void menu_configuracion(){
  unsigned int contador=0;
 
- if(PIN_PULSADOR_ENTER){
+ if( RD6_bit ){
  contador=0;
- while(PIN_PULSADOR_ENTER){
+ while( RD6_bit ){
  Delay_ms(10);
  contador++;
  if(contador>=100){
  lcd_Print('C');
  buzzer(500,1);
  contador=0;
- while(PIN_PULSADOR_ENTER){}
+ while( RD6_bit ){}
 
  while(contador<2){
 
@@ -189,7 +180,7 @@ void menu_configuracion(){
 
  while(1){
 
- if(PIN_PULSADOR_DER){
+ if( RD7_bit ){
 
  Delay_ms(200);
  if(contador==0){
@@ -200,7 +191,7 @@ void menu_configuracion(){
  lcd_Print('H');
  }
 
- }else if(PIN_PULSADOR_IZQ){
+ }else if( RD5_bit ){
 
  Delay_ms(200);
  if(contador==0){
@@ -211,8 +202,8 @@ void menu_configuracion(){
  lcd_Print('H');
  }
 
- }else if(PIN_PULSADOR_ENTER){
- while(PIN_PULSADOR_ENTER){}
+ }else if( RD6_bit ){
+ while( RD6_bit ){}
  buzzer(100,1);
  break;
  }
@@ -231,39 +222,90 @@ void menu_configuracion(){
 
 void proceso_control(){
 
- if( 1 ){
+ if( 1  && error==0){
 
  if(temperatura==stpointT){
- PIN_CALENTADOR=0;
- PIN_VENTILADOR=0;
+  RD2_bit =0;
+  RD1_bit =0;
  }else if(temperatura<stpointT){
- PIN_CALENTADOR=1;
- PIN_VENTILADOR=0;
+  RD2_bit =1;
+  RD1_bit =0;
  }else if(temperatura>stpointT){
- PIN_CALENTADOR=0;
- PIN_VENTILADOR=1;
+  RD2_bit =0;
+  RD1_bit =1;
  }
 
  if(humedad==stpointH){
- PIN_HUMIFICADOR=0;
+  RD3_bit =0;
  }else if(humedad<stpointH){
- PIN_HUMIFICADOR=1;
+  RD3_bit =1;
  }else if(humedad>stpointH){
- PIN_HUMIFICADOR=0;
+  RD3_bit =0;
  }
 
  }else{
- PIN_HUMIFICADOR=0;
- PIN_CALENTADOR=0;
- PIN_VENTILADOR=0;
+  RD3_bit =0;
+  RD2_bit =0;
+  RD1_bit =0;
  }
 }
 
+void uart_transmitir_datos(){
 
+ unsigned char msg[]="T00A00H00B00S000E00\n\r";
+ unsigned char i=0;
+ unsigned char unidad=0;
+ unsigned char decimal=0;
+
+
+ decimal=temperatura/10;
+ unidad=temperatura-(decimal*10);
+ msg[1]=decimal+48;
+ msg[2]=unidad+48;
+
+ decimal=stpointT/10;
+ unidad=stpointT-(decimal*10);
+ msg[4]=decimal+48;
+ msg[5]=unidad+48;
+
+ decimal=humedad/10;
+ unidad=humedad-(decimal*10);
+ msg[7]=decimal+48;
+ msg[8]=unidad+48;
+
+ decimal=stpointH/10;
+ unidad=stpointH-(decimal*10);
+ msg[10]=decimal+48;
+ msg[11]=unidad+48;
+
+ msg[13]= RD1_bit +48;
+ msg[14]= RD2_bit +48;
+ msg[15]= RD3_bit +48;
+
+ decimal=error/10;
+ unidad=error-(decimal*10);
+ msg[17]=decimal+48;
+ msg[18]=unidad+48;
+
+
+ UART1_Write_Text(msg);
+
+}
+
+void uart_recibir_datos(){
+ unsigned char msg[15];
+
+ if (UART1_Data_Ready() == 1) {
+ UART1_Read_Text(msg, "X", 15);
+ UART1_Write_Text(msg);
+ UART1_Write_Text("\n\r");
+ }
+
+}
 
 void main() {
- ANSEL =0X00;
- ANSELH = 0X00;
+ ANSEL=0X00;
+ ANSELH=0X00;
  TRISD=0XE0;
  TRISA=0X00;
  PORTA=0X00;
@@ -272,25 +314,30 @@ void main() {
  Lcd_Cmd(_LCD_CURSOR_OFF);
  stpointT=EEPROM_Read(0x02);
  stpointH=EEPROM_Read(0x03);
+ UART1_Init(9600);
  buzzer(600,1);
-
-
 
 
  while(1){
 
 
 
- if(read_dth11(1)==1){
+ if(read_dth11()==1){
  lcd_Print('I');
+ error=0;
  }else {
  lcd_Print('E');
+ error=1;
  buzzer(200,3);
  delay_ms(500);
  }
 
+ uart_transmitir_datos();
+
+
  for(i=0;i< 1000 ;i++){
  delay_ms(1);
+ uart_recibir_datos();
  menu_configuracion();
  proceso_control();
  }

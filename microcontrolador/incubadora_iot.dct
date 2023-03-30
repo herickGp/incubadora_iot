@@ -506,6 +506,7 @@ eepgd_bit
 eeprom_read
 eeprom_write
 equals_double
+error
 exp
 expander_clrbit_porta
 expander_clrbit_portb
@@ -849,14 +850,6 @@ pen
 pen_bit
 pie1
 pie2
-pin_calentador
-pin_humificador
-pin_pulsador_der
-pin_pulsador_enter
-pin_pulsador_izq
-pin_sensor
-pin_sensor_direction
-pin_ventilador
 pir1
 pir2
 port_to_tris_offset
@@ -1625,6 +1618,8 @@ txreg
 txsta
 ua
 ua_bit
+uart_recibir_datos
+uart_transmitir_datos
 uart1_data_ready
 uart1_init
 uart1_read
