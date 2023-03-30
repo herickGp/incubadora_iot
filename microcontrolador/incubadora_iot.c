@@ -249,7 +249,7 @@ void menu_configuracion(){                        //funcion para antender la con
 
 void proceso_control(){                           // funcion para gestionar el control automatico de los perifericos para mantener las variables estables
 
-  if(ENABLE_CONTROL_AUTOMATICO){
+  if(ENABLE_CONTROL_AUTOMATICO && error==0){
 
     if(temperatura==stpointT){
        PIN_CALENTADOR=0;
@@ -278,10 +278,12 @@ void proceso_control(){                           // funcion para gestionar el c
 }//fin proceso control
 
 void uart_transmitir_datos(){
-  unsigned char msg[]="T00A00H00B00E00\n\r";
+
+  unsigned char msg[]="T00A00H00B00S000E00\n\r";
   unsigned char i=0;
   unsigned char unidad=0;
   unsigned char decimal=0;
+  
   //temperatura
   decimal=temperatura/10;
   unidad=temperatura-(decimal*10);
@@ -302,11 +304,16 @@ void uart_transmitir_datos(){
   unidad=stpointH-(decimal*10);
   msg[10]=decimal+48;
   msg[11]=unidad+48;
+  //estado periferico
+  msg[13]=PIN_VENTILADOR+48;
+  msg[14]=PIN_CALENTADOR+48;
+  msg[15]=PIN_HUMIFICADOR+48;
   // codigo error
   decimal=error/10;
   unidad=error-(decimal*10);
-  msg[13]=decimal+48;
-  msg[14]=unidad+48;
+  msg[17]=decimal+48;
+  msg[18]=unidad+48;
+
 
   UART1_Write_Text(msg);
   
@@ -331,7 +338,7 @@ void main() {
  while(1){
 
 
-
+    //se realiza la lectura del sensor
    if(read_dth11()==1){
      lcd_Print('I');
      error=0;
@@ -341,8 +348,10 @@ void main() {
      buzzer(200,3);
      delay_ms(500);
    }
-    uart_transmitir_datos();
+   //se transmite la informacion por medio de uart
+   uart_transmitir_datos();
 
+   //se mantien en un bucle atendiendo los pulsadores y el proceso de control durante un tiempo estipulado
    for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
     delay_ms(1);
     menu_configuracion();

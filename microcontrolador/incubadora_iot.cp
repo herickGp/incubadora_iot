@@ -222,7 +222,7 @@ void menu_configuracion(){
 
 void proceso_control(){
 
- if( 1 ){
+ if( 1  && error==0){
 
  if(temperatura==stpointT){
   RD2_bit =0;
@@ -251,7 +251,7 @@ void proceso_control(){
 }
 
 void uart_transmitir_datos(){
- unsigned char msg[]="T00A00H00B00E00\n\r";
+ unsigned char msg[]="T00A00H00B00S000E00\n\r";
  unsigned char i=0;
  unsigned char unidad=0;
  unsigned char decimal=0;
@@ -276,10 +276,15 @@ void uart_transmitir_datos(){
  msg[10]=decimal+48;
  msg[11]=unidad+48;
 
+ msg[13]= RD1_bit +48;
+ msg[14]= RD2_bit +48;
+ msg[15]= RD3_bit +48;
+
  decimal=error/10;
  unidad=error-(decimal*10);
- msg[13]=decimal+48;
- msg[14]=unidad+48;
+ msg[17]=decimal+48;
+ msg[18]=unidad+48;
+
 
  UART1_Write_Text(msg);
 
@@ -314,7 +319,9 @@ void main() {
  buzzer(200,3);
  delay_ms(500);
  }
+
  uart_transmitir_datos();
+
 
  for(i=0;i< 1000 ;i++){
  delay_ms(1);
