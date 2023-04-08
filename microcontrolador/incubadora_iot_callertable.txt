@@ -32,6 +32,22 @@ main
 					Delay_1us
 					Delay_5500us
 					Delay_50us
+		Custom_Chulo
+			Lcd_Cmd
+				Delay_1us
+				Delay_5500us
+				Delay_50us
+			____DoICP
+			Lcd_Chr_CP
+				Lcd_Cmd
+					Delay_1us
+					Delay_5500us
+					Delay_50us
+			Lcd_Chr
+				Lcd_Cmd
+					Delay_1us
+					Delay_5500us
+					Delay_50us
 	uart_transmitir_datos
 		Div_8X8_U
 		Mul_8X8_U
@@ -39,11 +55,7 @@ main
 			UART1_Write
 	uart_recibir_datos
 		UART1_Data_Ready
-		UART1_Read_Text
-			UART1_Data_Ready
-			UART1_Read
-		UART1_Write_Text
-			UART1_Write
+		UART1_Read
 	menu_configuracion
 		lcd_Print
 			Lcd_Cmd
@@ -58,6 +70,22 @@ main
 					Delay_5500us
 					Delay_50us
 				Lcd_Chr_CP
+					Lcd_Cmd
+						Delay_1us
+						Delay_5500us
+						Delay_50us
+			Custom_Chulo
+				Lcd_Cmd
+					Delay_1us
+					Delay_5500us
+					Delay_50us
+				____DoICP
+				Lcd_Chr_CP
+					Lcd_Cmd
+						Delay_1us
+						Delay_5500us
+						Delay_50us
+				Lcd_Chr
 					Lcd_Cmd
 						Delay_1us
 						Delay_5500us

@@ -26,7 +26,6 @@
 #define  PIN_HUMIFICADOR RD3_bit
 #define  PIN_VENTILADOR RD1_bit
 #define  PIN_CALENTADOR RD2_bit
-// pins LCD
 sbit LCD_RS at RB4_bit;
 sbit LCD_EN at RB5_bit;
 sbit LCD_D4 at RB0_bit;
@@ -47,8 +46,19 @@ unsigned char humedad=0;
 unsigned short stpointH=0;
 unsigned short stpointT=0;
 unsigned int i=0;
-unsigned char error=0;  //error=01 error den dht11
+unsigned char error=0;  //error=1 error den dht11
+unsigned char estadoWifi=0;
+unsigned char estadoSubscripcion=0;
 
+
+void Custom_Chulo(char pos_row2, char pos_char2) {
+  const char chulo[] = {0,0,1,3,22,28,8,0};
+  char i;
+    Lcd_Cmd(64);
+    for (i = 0; i<=7; i++) Lcd_Chr_CP(chulo[i]);
+    Lcd_Cmd(_LCD_RETURN_HOME);
+    Lcd_Chr(pos_row2, pos_char2, 0);
+}
 
 //==================================================FUNCIONES
 void buzzer(unsigned int millis,unsigned int repeticiones){
@@ -143,17 +153,42 @@ void lcd_Print(unsigned char screen){             //funcion para imprimir las di
 
       case 'I':
                 ByteToStr(temperatura,txtInt);
-                Lcd_Out(1,13,txtInt);
+                Lcd_Out(1,2,txtInt);
                 ByteToStr(humedad,txtInt);
-                Lcd_Out(2,13,txtInt);
-                Lcd_Out(1,1,"TEMPERATURA:");
-                Lcd_Out(2,1,"HUMEDAD:");
-                Lcd_Out(1,16,"C");
-                Lcd_Out(2,16,"%");
+                Lcd_Out(2,2,txtInt);
+                 Lcd_Out(1,1,"T=");
+                Lcd_Out(2,1,"H=");
+                Lcd_Out(1,5,"C|");
+                Lcd_Out(2,5,"%|");
+                
+                ByteToStr(stpointT,txtInt);
+                Lcd_Out(1,9,txtInt);
+                ByteToStr(stpointH,txtInt);
+                Lcd_Out(2,9,txtInt);
+                 Lcd_Out(1,7,"SP=");
+                Lcd_Out(2,7,"SP=");
+                Lcd_Out(1,12,"|");
+                Lcd_Out(2,12,"|");
+                
+                Lcd_Out(1,13,"RED");
+                Lcd_Out(2,13,"SUB");
+                if(estadoWifi){
+                  Custom_Chulo(1, 16);
+                }else{
+                  Lcd_Out(1,16,"");
+                }
+                if(estadoSubscripcion){
+                  Custom_Chulo(2, 16);
+                }else{
+                  Lcd_Out(2,16,"x");
+                }
+
+
                 break;
 
-      case 'E': Lcd_Out(1,7,"[X]");
-                Lcd_Out(2,2,"ERROR EN DHT11");
+
+      case 'E': Lcd_Out(1,8,"[X]");
+                Lcd_Out(2,4,"ERROR DHT11");
                 break;
 
       case 'C': Lcd_Out(1,3,"CONFIGURACION");
@@ -168,16 +203,19 @@ void lcd_Print(unsigned char screen){             //funcion para imprimir las di
 
       case 'H': Lcd_Out(1,4,"-HUMEDAD-");
                 Lcd_Out(2,1,"<>");
-                 Lcd_Out(2,16,"%");
+                Lcd_Out(2,16,"%");
                 ByteToStr(stpointH,txtInt);
                 Lcd_Out(2,13,txtInt);
                 break;
 
-      case 'X': Lcd_Out(1,7,"");
-                Lcd_Out(2,2,"ERROR EN DHT11");
+
+
+
+
+
                 break;
 
-      default:  Lcd_Out(1,7,"NULL");
+      default:
                 break;
 
    }//fin switch
@@ -279,7 +317,7 @@ void proceso_control(){                           // funcion para gestionar el c
 
 void uart_transmitir_datos(){
 
-  unsigned char msg[]="T00A00H00B00S000E00\n\r";
+  unsigned char msg[]="T00A00H00B00S000E0F\n\r";
   unsigned char i=0;
   unsigned char unidad=0;
   unsigned char decimal=0;
@@ -309,10 +347,7 @@ void uart_transmitir_datos(){
   msg[14]=PIN_CALENTADOR+48;
   msg[15]=PIN_HUMIFICADOR+48;
   // codigo error
-  decimal=error/10;
-  unidad=error-(decimal*10);
-  msg[17]=decimal+48;
-  msg[18]=unidad+48;
+  msg[17]=error+48;
 
 
   UART1_Write_Text(msg);
@@ -320,12 +355,28 @@ void uart_transmitir_datos(){
 }//fin transmitir datos
 
 void uart_recibir_datos(){
- unsigned char msg[15];
+ unsigned char msg[5];
+ unsigned char dato=0;
   
  if (UART1_Data_Ready() == 1) {
-    UART1_Read_Text(msg, "X", 15);
-    UART1_Write_Text(msg); 
-    UART1_Write_Text("\n\r");
+      dato=UART1_Read();
+     switch(dato){
+       case 'C':
+                estadoWifi=1;
+                break;
+       case 'D':
+                estadoWifi=0;
+                break;
+       case 'S':
+                estadoSubscripcion=1;
+                break;
+       case 'U':
+                estadoSubscripcion=0;
+                break;
+                
+     default: break;
+     }
+
   }
   
 }//fin uart recibir datos
@@ -356,7 +407,7 @@ void main() {
      lcd_Print('E');
      error=1;
      buzzer(200,3);
-     delay_ms(500);
+     delay_ms(400);
    }
    //se transmite la informacion por medio de uart
    uart_transmitir_datos();
