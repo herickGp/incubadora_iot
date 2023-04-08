@@ -58,17 +58,7 @@ services:
     depends_on:
       - database
   
- #........................ analitica .....................  
 
-  analitica:
-    container_name: analitica
-    image: analitica-image
-    restart: always
-    build:
-      context: .
-      dockerfile: analitica/Dockerfile
-    depends_on:
-      - database
 
 
 
