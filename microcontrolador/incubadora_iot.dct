@@ -433,6 +433,7 @@ cren
 cren_bit
 csrc
 csrc_bit
+custom_chulo
 d
 d_a
 d_a_bit
@@ -507,6 +508,8 @@ eeprom_read
 eeprom_write
 equals_double
 error
+estadosubscripcion
+estadowifi
 exp
 expander_clrbit_porta
 expander_clrbit_portb
