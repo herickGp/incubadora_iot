@@ -23,6 +23,15 @@ const char *root_topic_publish = "incubadora-iot";
 //----------WIFI----------
 const char* ssid = "GONZALEZ";
 const char* password = "1019030208GP";
+//-----CONTROL/ESTADO-----
+unsigned char temperatura=0;
+unsigned char humedad=0;
+unsigned char set_point_temperatura=0;
+unsigned char set_point_humedad=0;
+unsigned char estado_calentador=0;
+unsigned char estado_ventilador=0;
+unsigned char estado_humificador=0;
+unsigned char error=0;
 //------------------------
 char uart_buffer[BUFFER_TAMANO];
 unsigned char buffer_pos=0;
