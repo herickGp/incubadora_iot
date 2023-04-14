@@ -182,13 +182,6 @@ void lcd_Print(unsigned char screen){
  Lcd_Out(2,13,txtInt);
  break;
 
-
-
-
-
-
- break;
-
  default:
  break;
 

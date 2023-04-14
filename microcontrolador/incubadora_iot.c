@@ -208,13 +208,6 @@ void lcd_Print(unsigned char screen){             //funcion para imprimir las di
                 Lcd_Out(2,13,txtInt);
                 break;
 
-
-
-
-
-
-                break;
-
       default:
                 break;
 
