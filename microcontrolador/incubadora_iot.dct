@@ -1469,6 +1469,7 @@ t6963c_writedata
 tan
 tanh
 temperatura
+tiempo_transmision
 time_datetoepoch
 time_epochtodate
 time_jd1970

@@ -16,6 +16,7 @@
 #define ENABLE_CONTROL_AUTOMATICO 1
 #define ENABLE_BUZZER 1
 #define MILISEG_ACTUALIZACION_LECTURA 1000
+#define SEG_ACTUALIZACION_TRANSMISION 3
 // pin perifericos
 #define PIN_BUZZER  RA0_bit
 #define  PIN_SENSOR_Direction TRISD0_bit
@@ -49,7 +50,7 @@ unsigned int i=0;
 unsigned char error=0;  //error=1 error den dht11
 unsigned char estadoWifi=0;
 unsigned char estadoSubscripcion=0;
-
+unsigned char tiempo_transmision=0;
 
 void Custom_Chulo(char pos_row2, char pos_char2) {
   const char chulo[] = {0,0,1,3,22,28,8,0};
@@ -403,8 +404,13 @@ void main() {
      delay_ms(400);
    }
    //se transmite la informacion por medio de uart
-   uart_transmitir_datos();
 
+
+     if(tiempo_transmision>= SEG_ACTUALIZACION_TRANSMISION){
+       uart_transmitir_datos();
+       tiempo_transmision=0;
+     }
+    
    //se mantien en un bucle atendiendo los pulsadores y el proceso de control durante un tiempo estipulado
    for(i=0;i<MILISEG_ACTUALIZACION_LECTURA;i++){
     delay_ms(1);  
@@ -412,6 +418,7 @@ void main() {
     menu_configuracion();
     proceso_control();
    }
+   tiempo_transmision++;
 
 
   } //fin while
