@@ -86,12 +86,14 @@ File41=Time
 File42=TouchPanel
 Count=43
 [EXPANDED_NODES]
-Count=0
+0=incubadora_iot.mcppi
+1=Sources
+Count=2
 [LIB_EXPANDED_NODES]
 0=mikroE Libraries
 1=System Libraries
 540=UART
-Count=3
+Count=4
 [PROGRAMMER_TYPE]
 Value=mikroE mikroProg
 [CODEGRIP_OPTIONS]
