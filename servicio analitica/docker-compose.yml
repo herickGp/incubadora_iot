@@ -1,0 +1,22 @@
+version: "3.2"
+services:
+
+  analitica:
+    container_name: analitica
+    image: analitica-image
+    restart: always
+    build:
+      context: .
+      dockerfile: analitica/Dockerfile
+   
+
+
+
+
+
+
+
+ 
+
+
+ 
