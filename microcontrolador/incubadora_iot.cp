@@ -1,5 +1,5 @@
 #line 1 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
-#line 29 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
+#line 30 "C:/Users/heric/Desktop/Proyecto final/incubadora_iot/microcontrolador/incubadora_iot.c"
 sbit LCD_RS at RB4_bit;
 sbit LCD_EN at RB5_bit;
 sbit LCD_D4 at RB0_bit;
@@ -23,7 +23,7 @@ unsigned int i=0;
 unsigned char error=0;
 unsigned char estadoWifi=0;
 unsigned char estadoSubscripcion=0;
-
+unsigned char tiempo_transmision=0;
 
 void Custom_Chulo(char pos_row2, char pos_char2) {
  const char chulo[] = {0,0,1,3,22,28,8,0};
@@ -377,7 +377,12 @@ void main() {
  delay_ms(400);
  }
 
+
+
+ if(tiempo_transmision>=  3 ){
  uart_transmitir_datos();
+ tiempo_transmision=0;
+ }
 
 
  for(i=0;i< 1000 ;i++){
@@ -386,6 +391,7 @@ void main() {
  menu_configuracion();
  proceso_control();
  }
+ tiempo_transmision++;
 
 
  }
